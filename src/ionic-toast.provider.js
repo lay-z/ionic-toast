@@ -38,10 +38,9 @@ angular.module('ionic-toast.provider', [])
         };
 
         var toastTemplate = $compile($templateCache.get('ionic-toast/templates/ionic-toast.html'))($scope);
-
         $scope.ionicToast = defaultScope;
-
         $document.find('body').append(toastTemplate);
+
 
         var toggleDisplayOfToast = function (display, opacity, callback) {
           $scope.ionicToast.toastStyle = {
@@ -57,7 +56,7 @@ angular.module('ionic-toast.provider', [])
           });
         };
 
-        provider.show = function (message, position, isSticky, duration) {
+        provider.show = function (message, position, isSticky, duration, styles) {
 
           if (!message) return;
           position = position || defaultConfig.position;
@@ -71,6 +70,11 @@ angular.module('ionic-toast.provider', [])
           });
 
           toggleDisplayOfToast('block', 1, function () {
+
+            if (styles) {
+              angular.extend($scope.ionicToast.toastStyle, styles);
+            }
+            
             if (isSticky)  return;
 
             toastTimer = $timeout(function () {
